@@ -1,0 +1,73 @@
+
+========================================================================
+[2026-05-20 10:13:20 UTC]
+========================================================================
+REQUEST: 5f7b262d7124
+OPERATION: reindex (36 file(s) submitted)
+
+INDEXED (35):
+  + .kilocode/package-lock.json  [1 chunk(s)]
+  + .kilocode/package.json  [1 chunk(s)]
+  + client/src/components/Footer.jsx  [1 chunk(s)]
+  + client/src/components/Navbar.jsx  [1 chunk(s)]
+  + client/src/components/ProductCard.jsx  [2 chunk(s)]
+  + client/src/context/CartContext.jsx  [3 chunk(s)]
+  + client/src/hooks/useCart.js  [1 chunk(s)]
+  + client/src/pages/About.jsx  [1 chunk(s)]
+  + client/src/pages/Cart.jsx  [1 chunk(s)]
+  + client/src/pages/Checkout.jsx  [2 chunk(s)]
+  + client/src/pages/Home.jsx  [1 chunk(s)]
+  + client/src/pages/OrderConfirmation.jsx  [1 chunk(s)]
+  + client/src/pages/ProductDetail.jsx  [2 chunk(s)]
+  + client/src/pages/Shop.jsx  [1 chunk(s)]
+  + client/src/services/api.js  [1 chunk(s)]
+  + client/src/services/cartService.js  [3 chunk(s)]
+  + client/src/services/orderService.js  [2 chunk(s)]
+  + client/src/services/productService.js  [2 chunk(s)]
+  + server/src/config/seedData.js  [1 chunk(s)]
+  + server/src/controllers/cartController.js  [3 chunk(s)]
+  + server/src/controllers/orderController.js  [2 chunk(s)]
+  + server/src/controllers/productController.js  [2 chunk(s)]
+  + server/src/models/Cart.js  [1 chunk(s)]
+  + server/src/models/Order.js  [1 chunk(s)]
+  + server/src/models/Product.js  [1 chunk(s)]
+  + server/src/routes/cartRoutes.js  [1 chunk(s)]
+  + server/src/routes/orderRoutes.js  [1 chunk(s)]
+  + server/src/routes/productRoutes.js  [1 chunk(s)]
+  + server/src/services/cartService.js  [4 chunk(s)]
+  + server/src/services/orderService.js  [3 chunk(s)]
+  + server/src/services/productService.js  [2 chunk(s)]
+  + client/index.html  [1 chunk(s)]
+  + client/src/App.jsx  [3 chunk(s)]
+  + client/src/index.css  [1 chunk(s)]
+  + server/src/index.js  [2 chunk(s)]
+
+SKIPPED / UNCHANGED (1):
+  ~ .kilocode/.gitignore
+
+PHASE TIMINGS:
+  phase1_prepare: 0.192s
+  phase2_enrich: 14.684s
+  phase3_embed: 3.173s
+  phase4_write: 7.826s
+  total: 25.998s
+
+TOKENS: enrichment=11968in/2663out  embeddings=0in
+
+========================================================================
+[2026-05-20 13:09:34 UTC]
+========================================================================
+REQUEST: 531ce6702cf4
+OPERATION: reindex (1 file(s) submitted)
+
+INDEXED (1):
+  + client/src/components/Navbar.jsx  [1 chunk(s)]
+
+PHASE TIMINGS:
+  phase1_prepare: 0.017s
+  phase2_enrich: 2.393s
+  phase3_embed: 0.412s
+  phase4_write: 1.592s
+  total: 4.423s
+
+TOKENS: enrichment=1364in/220out  embeddings=2412in

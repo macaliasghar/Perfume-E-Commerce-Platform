@@ -1,0 +1,64 @@
+
+========================================================================
+[2026-05-20 10:12:44 UTC]  NPM INSTALL CLIENT | success=True
+========================================================================
+npm install succeeded in client/
+
+========================================================================
+[2026-05-20 10:12:52 UTC]  NPM INSTALL SERVER | success=True
+========================================================================
+npm install succeeded in server/
+
+========================================================================
+[2026-05-20 10:12:52 UTC]  APP.JSX CONTENT CHECK | tier=A | passed=True
+========================================================================
+App.jsx differs from template
+
+========================================================================
+[2026-05-20 10:12:54 UTC]  APP.JSX CONTENT CHECK | tier=B | passed=True
+========================================================================
+ok
+
+========================================================================
+[2026-05-20 13:09:07 UTC]  NPM INSTALL CLIENT | skipped
+========================================================================
+deps unchanged — skipping install
+
+========================================================================
+[2026-05-20 13:09:07 UTC]  NPM INSTALL SERVER | skipped
+========================================================================
+deps unchanged — skipping install
+
+========================================================================
+[2026-05-20 13:09:25 UTC]  PM2 LOGS CLIENT | process_found=True
+========================================================================
+[TAILING] Tailing last 50 lines for [6a0d85ecad742ffa78e442fb--client] process (change the value with --lines option)
+/root/.pm2/logs/6a0d85ecad742ffa78e442fb--client-error-95.log last 50 lines:
+/root/.pm2/logs/6a0d85ecad742ffa78e442fb--client-out-95.log last 50 lines:
+95|6a0d85e | 2026-05-20T13:01:00: 
+95|6a0d85e | 2026-05-20T13:01:00: > react-vite-app@1.0.0 start
+95|6a0d85e | 2026-05-20T13:01:00: > vite --force --host 0.0.0.0 --clearScreen false
+95|6a0d85e | 2026-05-20T13:01:00: 
+95|6a0d85e | 2026-05-20T13:01:00: {
+95|6a0d85e | 2026-05-20T13:01:00:   'import.meta.env.VITE_API_URL': '"https://6a0d85ecad742ffa78e442fb.icod.ai/api"'
+95|6a0d85e | 2026-05-20T13:01:00: } this is the file
+95|6a0d85e | 2026-05-20T13:01:00: Forced re-optimization of dependencies
+95|6a0d85e | 2026-05-20T13:01:00: 
+95|6a0d85e | 2026-05-20T13:01:00:   VITE v5.4.21  ready in 275 ms
+95|6a0d85e | 2026-05-20T13:01:00: 
+95|6a0d85e | 2026-05-20T13:01:00:   ➜  Local:   http://localhost:3168/
+95|6a0d85e | 2026-05-20T13:01:00:   ➜  Network: http://10.42.0.216:3168/
+95|6a0d85e | 2026-05-20T13:05:49: 1:05:49 PM [vite] hmr update /src/components/Navbar.jsx, /src/index.css
+95|6a0d85e | 2026-05-20T13:09:08: 
+95|6a0d85e | 2026-05-20T13:09:08: > react-vite-app@1.0.0 start
+95|6a0d85e | 2026-05-20T13:09:08: > vite --force --host 0.0.0.0 --clearScreen false
+95|6a0d85e | 2026-05-20T13:09:08: 
+95|6a0d85e | 2026-05-20T13:09:08: {
+95|6a0d85e | 2026-05-20T13:09:08:   'import.meta.env.VITE_API_URL': '"https://6a0d85ecad742ffa78e442fb.icod.ai/api"'
+95|6a0d85e | 2026-05-20T13:09:08: } this is the file
+95|6a0d85e | 2026-05-20T13:09:08: Forced re-optimization of dependencies
+95|6a0d85e | 2026-05-20T13:09:08: 
+95|6a0d85e | 2026-05-20T13:09:08:   VITE v5.4.21  ready in 267 ms
+95|6a0d85e | 2026-05-20T13:09:08: 
+95|6a0d85e | 2026-05-20T13:09:08:   ➜  Local:   http://localhost:3168/
+95|6a0d85e | 2026-05-20T13:09:08:   ➜  Network: http://10.42.0.216:3168/

@@ -1,0 +1,362 @@
+
+========================================================================
+[2026-05-20 10:00:29 UTC]  CONTEXT ASSEMBLY OUTPUT | request_id=5f7b262d7124 intent=generation
+========================================================================
+--- context_summary ---
+Read client and server package.json files to confirm available dependencies: React 18, react-router-dom v6, framer-motion, lucide-react, axios, react-hot-toast, TailwindCSS on the frontend; Express, Mongoose, dotenv, cors on the backend.
+
+--- enriched_prompt (7861 chars) ---
+Build a modern, responsive premium perfume e-commerce MERN application. Use React + TailwindCSS + Framer Motion on the frontend (Vite), Express + Mongoose on the backend. Check @/client/package.json and @/server/package.json for available dependencies.
+
+---
+
+## BRAND & DESIGN LANGUAGE
+- Brand name: **"Lumière Parfums"**
+- Color palette:
+  - Background: #0A0A0A (near-black)
+  - Surface/card: #141414 and #1C1C1C
+  - Gold accent: #C9A96E
+  - Light gold / hover: #E2C895
+  - Muted text: #8A8A8A
+  - White text: #F5F5F5
+- Typography: Use Google Fonts — `Playfair Display` (headings, serif, elegant) + `Inter` (body, sans-serif). Import via index.html or index.css.
+- Aesthetic: ultra-premium, dark luxury, minimalist, cinematic. Generous whitespace, subtle gold borders, smooth Framer Motion transitions on every page and card.
+
+---
+
+## BACKEND — Express + Mongoose
+
+### Models
+1. **Product** — `name`, `brand`, `description`, `price` (Number), `originalPrice` (Number, optional for discount), `category` (enum: Men, Women, Unisex), `sizes` ([{ ml: Number, price: Number }]), `images` ([String] — placeholder URLs), `notes` ({ top: [String], heart: [String], base: [String] }), `rating` (Number, default 4.5), `reviewCount` (Number), `stock` (Number), `isFeatured` (Boolean), `isBestseller` (Boolean), `createdAt`.
+2. **Cart** — `sessionId` (String), `items` ([{ productId: ref Product, size: Number, quantity: Number, price: Number }]), `updatedAt`.
+3. **Order** — `orderNumber` (String, auto-generated), `customerInfo` ({ name, email, address, city, country, zip }), `items` ([{ productId, name, size, quantity, price }]), `subtotal`, `shipping`, `total`, `status` (enum: pending, confirmed, shipped, delivered), `createdAt`.
+
+### Routes
+- `GET /api/products` — list all, support query params: `category`, `featured`, `bestseller`, `search`, `sort` (price_asc, price_desc, rating).
+- `GET /api/products/:id` — single product detail.
+- `POST /api/cart` — create/update cart (upsert by sessionId).
+- `GET /api/cart/:sessionId` — fetch cart.
+- `DELETE /api/cart/:sessionId/item` — remove item from cart (body: productId, size).
+- `POST /api/orders` — place order, clears cart.
+- `GET /api/orders/:orderNumber` — order status lookup.
+
+### Seed
+Seed **12 premium perfumes** spanning Men, Women, Unisex categories. Include realistic fragrance notes, prices ($80–$400), and varied ratings. Use Unsplash placeholder image URLs featuring perfume bottles. Mark 3 as `isFeatured`, 4 as `isBestseller`.
+
+---
+
+## FRONTEND — React + Vite + TailwindCSS
+
+### Routing (react-router-dom v6)
+- `/` — Home
+- `/shop` — Shop / Product Listing
+- `/product/:id` — Product Detail
+- `/cart` — Cart
+- `/checkout` — Checkout
+- `/order-confirmation/:orderNumber` — Order Confirmed
+- `/about` — About (brand story)
+
+### Global Layout
+- **Navbar**: sticky top, dark background #0A0A0A with subtle bottom gold border. Logo (text "Lumière" in Playfair Display gold). Nav links: Home, Shop, About. Cart icon (lucide-react `ShoppingBag`) with animated item-count badge in gold. Smooth scroll behavior. Mobile: hamburger menu with slide-in drawer.
+- **Footer**: dark, 3-column grid — Brand tagline | Navigation links | Newsletter signup input + button. Gold accents. Social icons.
+
+### Pages
+
+#### 1. Home (`/`)
+- **Hero section**: Full-viewport, dark background with a large background image (Unsplash perfume/luxury). Centered headline "The Art of Scent" in Playfair Display (~72px, gold gradient text). Subheading in Inter. Two CTA buttons: "Explore Collection" (gold filled) + "Our Story" (ghost outline). Framer Motion fade-in + stagger.
+- **Featured Collection**: Section heading "Curated Fragrances". Horizontal scroll or 3-column grid of featured products using ProductCard component. Framer Motion slide-up on scroll.
+- **Brand Story Strip**: Full-width dark section with a quote or brand manifesto text centered, elegant, gold italic text.
+- **Bestsellers**: Grid of bestseller products with "BESTSELLER" badge.
+- **Categories**: 3 clickable cards for Men / Women / Unisex — dark cards with hover gold border glow, each links to `/shop?category=X`.
+- **Newsletter CTA**: Full-width section with email signup, gold button.
+
+#### 2. Shop (`/shop`)
+- **Sidebar filters** (desktop) / collapsible drawer (mobile): Category (Men, Women, Unisex), Price range slider (or min/max inputs), Sort dropdown.
+- **Product grid**: responsive 2–4 col. Each ProductCard: image, name, brand, price, rating stars, "Add to Cart" button.
+- **Search bar** at top.
+- Results count shown. Empty state illustration.
+
+#### 3. Product Detail (`/product/:id`)
+- Large image display (main + thumbnails if multiple images).
+- Name, brand, price, rating, review count.
+- **Size selector**: pill buttons for available ml sizes, clicking updates displayed price.
+- **Fragrance Notes**: accordion or 3-column visual showing Top / Heart / Base notes with small icons.
+- **Quantity selector** + **Add to Cart** button (gold, full-width on mobile).
+- Description paragraph.
+- Related products row at bottom.
+- Framer Motion page transition.
+
+#### 4. Cart (`/cart`)
+- Line items: image thumbnail, name, size, quantity stepper (+/−), price, remove button.
+- Order summary sidebar: subtotal, shipping (free over $150, else $15), total.
+- "Proceed to Checkout" gold button.
+- Empty cart state with illustration + link to shop.
+
+#### 5. Checkout (`/checkout`)
+- Single-page form: Customer Info (name, email), Shipping Address (address, city, country, zip).
+- Order summary on right (or below on mobile).
+- "Place Order" button → POST to `/api/orders` → redirect to `/order-confirmation/:orderNumber`.
+- Form validation with inline error messages.
+
+#### 6. Order Confirmation (`/order-confirmation/:orderNumber`)
+- Success animation (Framer Motion scale + fade).
+- Order number, thank-you message, summary of items.
+- "Continue Shopping" button.
+
+#### 7. About (`/about`)
+- Brand story with editorial layout: large heading, paragraphs, a horizontal dividing line with gold ornament, values section (3 cards: Craftsmanship, Heritage, Exclusivity).
+
+### ProductCard Component
+- Dark card (#1C1C1C), rounded-xl, overflow-hidden.
+- Image aspect-ratio 4/5, `object-cover`, with subtle hover zoom (scale 1.05, transition 0.4s).
+- Gold "BESTSELLER" or "FEATURED" badge (top-left, absolute).
+- Hover state: gold bottom border glow + quick-add button slides up from bottom.
+- Rating display: gold filled stars using lucide-react `Star`.
+
+### Cart State
+Manage cart via React Context + localStorage for sessionId. On mount, generate or retrieve a UUID sessionId. Sync cart with backend (`/api/cart`). Provide `addToCart`, `removeFromCart`, `updateQuantity`, `clearCart` methods.
+
+### Animations (Framer Motion)
+- Page transitions: `AnimatePresence` with fade + Y translate.
+- Scroll-triggered reveals: `whileInView` with `fadeInUp` variants on sections.
+- ProductCard hover: subtle lift + gold glow shadow.
+- Navbar cart badge: scale bounce on count change.
+- Checkout success: large checkmark scale animation.
+
+### Tailwind Config
+Extend the default theme:
+- Add custom colors: `gold: #C9A96E`, `gold-light: #E2C895`, `dark: #0A0A0A`, `surface: #141414`, `surface2: #1C1C1C`.
+- Add `fontFamily`: `display: ['Playfair Display', 'serif']`, `body: ['Inter', 'sans-serif']`.
+
+---
+
+## TECHNICAL NOTES
+- Use `axios` for all API calls with a base URL pointing to the Express server.
+- Use `react-hot-toast` for cart add confirmations and order success toasts.
+- Use `lucide-react` icons throughout (ShoppingBag, Star, ChevronDown, Menu, X, Heart, Package, etc.).
+- Use `framer-motion` for all animations.
+- Tailwind utility classes for all styling — no external CSS frameworks.
+- The backend should use ES module syntax (`import/export`) and dotenv for `MONGODB_URI`.
+- Include a `/server/src/seed.js` script to populate the DB with 12 products.
+
+
+========================================================================
+[2026-05-20 10:00:29 UTC]  PASSING TO EXECUTION ORCHESTRATOR | request_id=5f7b262d7124 intent=generation
+========================================================================
+Build a modern, responsive premium perfume e-commerce MERN application. Use React + TailwindCSS + Framer Motion on the frontend (Vite), Express + Mongoose on the backend. Check @/client/package.json and @/server/package.json for available dependencies.
+
+---
+
+## BRAND & DESIGN LANGUAGE
+- Brand name: **"Lumière Parfums"**
+- Color palette:
+  - Background: #0A0A0A (near-black)
+  - Surface/card: #141414 and #1C1C1C
+  - Gold accent: #C9A96E
+  - Light gold / hover: #E2C895
+  - Muted text: #8A8A8A
+  - White text: #F5F5F5
+- Typography: Use Google Fonts — `Playfair Display` (headings, serif, elegant) + `Inter` (body, sans-serif). Import via index.html or index.css.
+- Aesthetic: ultra-premium, dark luxury, minimalist, cinematic. Generous whitespace, subtle gold borders, smooth Framer Motion transitions on every page and card.
+
+---
+
+## BACKEND — Express + Mongoose
+
+### Models
+1. **Product** — `name`, `brand`, `description`, `price` (Number), `originalPrice` (Number, optional for discount), `category` (enum: Men, Women, Unisex), `sizes` ([{ ml: Number, price: Number }]), `images` ([String] — placeholder URLs), `notes` ({ top: [String], heart: [String], base: [String] }), `rating` (Number, default 4.5), `reviewCount` (Number), `stock` (Number), `isFeatured` (Boolean), `isBestseller` (Boolean), `createdAt`.
+2. **Cart** — `sessionId` (String), `items` ([{ productId: ref Product, size: Number, quantity: Number, price: Number }]), `updatedAt`.
+3. **Order** — `orderNumber` (String, auto-generated), `customerInfo` ({ name, email, address, city, country, zip }), `items` ([{ productId, name, size, quantity, price }]), `subtotal`, `shipping`, `total`, `status` (enum: pending, confirmed, shipped, delivered), `createdAt`.
+
+### Routes
+- `GET /api/products` — list all, support query params: `category`, `featured`, `bestseller`, `search`, `sort` (price_asc, price_desc, rating).
+- `GET /api/products/:id` — single product detail.
+- `POST /api/cart` — create/update cart (upsert by sessionId).
+- `GET /api/cart/:sessionId` — fetch cart.
+- `DELETE /api/cart/:sessionId/item` — remove item from cart (body: productId, size).
+- `POST /api/orders` — place order, clears cart.
+- `GET /api/orders/:orderNumber` — order status lookup.
+
+### Seed
+Seed **12 premium perfumes** spanning Men, Women, Unisex categories. Include realistic fragrance notes, prices ($80–$400), and varied ratings. Use Unsplash placeholder image URLs featuring perfume bottles. Mark 3 as `isFeatured`, 4 as `isBestseller`.
+
+---
+
+## FRONTEND — React + Vite + TailwindCSS
+
+### Routing (react-router-dom v6)
+- `/` — Home
+- `/shop` — Shop / Product Listing
+- `/product/:id` — Product Detail
+- `/cart` — Cart
+- `/checkout` — Checkout
+- `/order-confirmation/:orderNumber` — Order Confirmed
+- `/about` — About (brand story)
+
+### Global Layout
+- **Navbar**: sticky top, dark background #0A0A0A with subtle bottom gold border. Logo (text "Lumière" in Playfair Display gold). Nav links: Home, Shop, About. Cart icon (lucide-react `ShoppingBag`) with animated item-count badge in gold. Smooth scroll behavior. Mobile: hamburger menu with slide-in drawer.
+- **Footer**: dark, 3-column grid — Brand tagline | Navigation links | Newsletter signup input + button. Gold accents. Social icons.
+
+### Pages
+
+#### 1. Home (`/`)
+- **Hero section**: Full-viewport, dark background with a large background image (Unsplash perfume/luxury). Centered headline "The Art of Scent" in Playfair Display (~72px, gold gradient text). Subheading in Inter. Two CTA buttons: "Explore Collection" (gold filled) + "Our Story" (ghost outline). Framer Motion fade-in + stagger.
+- **Featured Collection**: Section heading "Curated Fragrances". Horizontal scroll or 3-column grid of featured products using ProductCard component. Framer Motion slide-up on scroll.
+- **Brand Story Strip**: Full-width dark section with a quote or brand manifesto text centered, elegant, gold italic text.
+- **Bestsellers**: Grid of bestseller products with "BESTSELLER" badge.
+- **Categories**: 3 clickable cards for Men / Women / Unisex — dark cards with hover gold border glow, each links to `/shop?category=X`.
+- **Newsletter CTA**: Full-width section with email signup, gold button.
+
+#### 2. Shop (`/shop`)
+- **Sidebar filters** (desktop) / collapsible drawer (mobile): Category (Men, Women, Unisex), Price range slider (or min/max inputs), Sort dropdown.
+- **Product grid**: responsive 2–4 col. Each ProductCard: image, name, brand, price, rating stars, "Add to Cart" button.
+- **Search bar** at top.
+- Results count shown. Empty state illustration.
+
+#### 3. Product Detail (`/product/:id`)
+- Large image display (main + thumbnails if multiple images).
+- Name, brand, price, rating, review count.
+- **Size selector**: pill buttons for available ml sizes, clicking updates displayed price.
+- **Fragrance Notes**: accordion or 3-column visual showing Top / Heart / Base notes with small icons.
+- **Quantity selector** + **Add to Cart** button (gold, full-width on mobile).
+- Description paragraph.
+- Related products row at bottom.
+- Framer Motion page transition.
+
+#### 4. Cart (`/cart`)
+- Line items: image thumbnail, name, size, quantity stepper (+/−), price, remove button.
+- Order summary sidebar: subtotal, shipping (free over $150, else $15), total.
+- "Proceed to Checkout" gold button.
+- Empty cart state with illustration + link to shop.
+
+#### 5. Checkout (`/checkout`)
+- Single-page form: Customer Info (name, email), Shipping Address (address, city, country, zip).
+- Order summary on right (or below on mobile).
+- "Place Order" button → POST to `/api/orders` → redirect to `/order-confirmation/:orderNumber`.
+- Form validation with inline error messages.
+
+#### 6. Order Confirmation (`/order-confirmation/:orderNumber`)
+- Success animation (Framer Motion scale + fade).
+- Order number, thank-you message, summary of items.
+- "Continue Shopping" button.
+
+#### 7. About (`/about`)
+- Brand story with editorial layout: large heading, paragraphs, a horizontal dividing line with gold ornament, values section (3 cards: Craftsmanship, Heritage, Exclusivity).
+
+### ProductCard Component
+- Dark card (#1C1C1C), rounded-xl, overflow-hidden.
+- Image aspect-ratio 4/5, `object-cover`, with subtle hover zoom (scale 1.05, transition 0.4s).
+- Gold "BESTSELLER" or "FEATURED" badge (top-left, absolute).
+- Hover state: gold bottom border glow + quick-add button slides up from bottom.
+- Rating display: gold filled stars using lucide-react `Star`.
+
+### Cart State
+Manage cart via React Context + localStorage for sessionId. On mount, generate or retrieve a UUID sessionId. Sync cart with backend (`/api/cart`). Provide `addToCart`, `removeFromCart`, `updateQuantity`, `clearCart` methods.
+
+### Animations (Framer Motion)
+- Page transitions: `AnimatePresence` with fade + Y translate.
+- Scroll-triggered reveals: `whileInView` with `fadeInUp` variants on sections.
+- ProductCard hover: subtle lift + gold glow shadow.
+- Navbar cart badge: scale bounce on count change.
+- Checkout success: large checkmark scale animation.
+
+### Tailwind Config
+Extend the default theme:
+- Add custom colors: `gold: #C9A96E`, `gold-light: #E2C895`, `dark: #0A0A0A`, `surface: #141414`, `surface2: #1C1C1C`.
+- Add `fontFamily`: `display: ['Playfair Display', 'serif']`, `body: ['Inter', 'sans-serif']`.
+
+---
+
+## TECHNICAL NOTES
+- Use `axios` for all API calls with a base URL pointing to the Express server.
+- Use `react-hot-toast` for cart add confirmations and order success toasts.
+- Use `lucide-react` icons throughout (ShoppingBag, Star, ChevronDown, Menu, X, Heart, Package, etc.).
+- Use `framer-motion` for all animations.
+- Tailwind utility classes for all styling — no external CSS frameworks.
+- The backend should use ES module syntax (`import/export`) and dotenv for `MONGODB_URI`.
+- Include a `/server/src/seed.js` script to populate the DB with 12 products.
+
+
+========================================================================
+[2026-05-20 13:05:05 UTC]  CONTEXT ASSEMBLY OUTPUT | request_id=531ce6702cf4 intent=edit
+========================================================================
+--- context_summary ---
+Fetched the full Navbar component (lines 7–149 of client/src/components/Navbar.jsx) via vector DB and confirmed project structure to identify all relevant files.
+
+--- enriched_prompt (2784 chars) ---
+Redesign the navbar for the Lumière perfume e-commerce site with a more modern, elevated look. The current navbar is in @/client/src/components/Navbar.jsx (full component lines 7–149).
+
+Apply the following changes:
+
+**Layout & Structure:**
+- Increase navbar height to `h-20 md:h-24` for a more spacious, luxurious feel
+- Add a thin gold top bar (4px) as an accent strip above the header — a `div` with `bg-gradient-to-r from-transparent via-[#C9A96E] to-transparent h-[1px]` at the very top
+- Center the logo absolutely so it sits in the exact horizontal center of the bar on desktop, while the nav links are on the left and the cart icon + search icon are on the right
+
+**Logo:**
+- Keep "Lumière" in Playfair Display but increase size to `text-3xl md:text-4xl`
+- Add a subtle gold text-shadow glow effect via inline style: `textShadow: '0 0 30px rgba(201,169,110,0.4)'`
+- Add a small decorative `◆` character (gold, `text-xs`) centered below the brand name as a sub-ornament
+
+**Desktop Navigation Links:**
+- Space links with `gap-10`
+- Add an animated gold underline on hover: use a `<span>` with `block h-[1px] bg-[#C9A96E] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left` beneath each link label
+- Wrap each `<Link>` in a `<div className="group relative">` to enable the group hover
+- Active link: show the underline always (`scale-x-100`) and use `text-[#C9A96E]`
+- Add a "Collections" link pointing to `/shop?collection=featured`
+
+**Icons (right side):**
+- Add a search icon (`Search` from lucide-react) to the left of the cart icon, styled identically to the cart icon (`text-[#8A8A8A] group-hover:text-[#C9A96E]`); clicking it toggles a search input that slides down from the navbar
+- The search bar (when open) slides in as a full-width strip below the header: dark `bg-[#111111]` background, a centered `input` with gold bottom border, no outline, placeholder "Search fragrances...", and a close `X` button on the right. Animate with Framer Motion `initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}`
+- Cart badge: keep existing animated badge but make the badge background `bg-gradient-to-br from-[#C9A96E] to-[#A07840]`
+
+**Scroll behavior:**
+- When scrolled: `bg-[#0A0A0A]/90 backdrop-blur-lg shadow-[0_4px_30px_rgba(0,0,0,0.5)]`
+- When not scrolled: `bg-transparent` (so the hero image shows through on the home page)
+
+**Mobile Drawer:**
+- Add the "Collections" link here too
+- Add the brand name "Lumière" at the top of the drawer in large Playfair Display gold text
+- Add social icons (Instagram, Twitter, Facebook) at the bottom of the drawer (import from lucide-react)
+
+Keep all existing routing, cart context hooks, and AnimatePresence logic intact. Reference @/client/package.json for available dependencies.
+
+========================================================================
+[2026-05-20 13:05:05 UTC]  PASSING TO EXECUTION ORCHESTRATOR | request_id=531ce6702cf4 intent=edit
+========================================================================
+Redesign the navbar for the Lumière perfume e-commerce site with a more modern, elevated look. The current navbar is in @/client/src/components/Navbar.jsx (full component lines 7–149).
+
+Apply the following changes:
+
+**Layout & Structure:**
+- Increase navbar height to `h-20 md:h-24` for a more spacious, luxurious feel
+- Add a thin gold top bar (4px) as an accent strip above the header — a `div` with `bg-gradient-to-r from-transparent via-[#C9A96E] to-transparent h-[1px]` at the very top
+- Center the logo absolutely so it sits in the exact horizontal center of the bar on desktop, while the nav links are on the left and the cart icon + search icon are on the right
+
+**Logo:**
+- Keep "Lumière" in Playfair Display but increase size to `text-3xl md:text-4xl`
+- Add a subtle gold text-shadow glow effect via inline style: `textShadow: '0 0 30px rgba(201,169,110,0.4)'`
+- Add a small decorative `◆` character (gold, `text-xs`) centered below the brand name as a sub-ornament
+
+**Desktop Navigation Links:**
+- Space links with `gap-10`
+- Add an animated gold underline on hover: use a `<span>` with `block h-[1px] bg-[#C9A96E] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left` beneath each link label
+- Wrap each `<Link>` in a `<div className="group relative">` to enable the group hover
+- Active link: show the underline always (`scale-x-100`) and use `text-[#C9A96E]`
+- Add a "Collections" link pointing to `/shop?collection=featured`
+
+**Icons (right side):**
+- Add a search icon (`Search` from lucide-react) to the left of the cart icon, styled identically to the cart icon (`text-[#8A8A8A] group-hover:text-[#C9A96E]`); clicking it toggles a search input that slides down from the navbar
+- The search bar (when open) slides in as a full-width strip below the header: dark `bg-[#111111]` background, a centered `input` with gold bottom border, no outline, placeholder "Search fragrances...", and a close `X` button on the right. Animate with Framer Motion `initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}`
+- Cart badge: keep existing animated badge but make the badge background `bg-gradient-to-br from-[#C9A96E] to-[#A07840]`
+
+**Scroll behavior:**
+- When scrolled: `bg-[#0A0A0A]/90 backdrop-blur-lg shadow-[0_4px_30px_rgba(0,0,0,0.5)]`
+- When not scrolled: `bg-transparent` (so the hero image shows through on the home page)
+
+**Mobile Drawer:**
+- Add the "Collections" link here too
+- Add the brand name "Lumière" at the top of the drawer in large Playfair Display gold text
+- Add social icons (Instagram, Twitter, Facebook) at the bottom of the drawer (import from lucide-react)
+
+Keep all existing routing, cart context hooks, and AnimatePresence logic intact. Reference @/client/package.json for available dependencies.
